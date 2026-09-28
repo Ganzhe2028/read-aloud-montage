@@ -10,6 +10,8 @@ from faster_whisper.vad import VadOptions, get_speech_timestamps
 
 
 def main() -> int:
+    sys.stdin.reconfigure(encoding="utf-8")
+    sys.stdout.reconfigure(encoding="utf-8")
     paths = json.load(sys.stdin)
     options = VadOptions(
         threshold=0.5,
