@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>朗读合辑 · 使用说明</title>
+<style>
+  body{font:18px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f7f6f2;color:#24362b;margin:0}
+  main{max-width:860px;margin:36px auto;padding:0 20px 60px}
+  header{text-align:center;margin:30px 0 10px}
+  h1{font-size:34px;margin:0 0 8px}
+  .sub{color:#5c6f62;font-size:17px}
+  section{background:#fff;border-radius:18px;padding:22px 28px;margin:18px 0;box-shadow:0 1px 4px rgba(36,54,43,.06)}
+  h2{font-size:22px;margin:4px 0 12px}
+  h2 .num{display:inline-block;background:#236d4d;color:#fff;border-radius:50%;width:32px;height:32px;line-height:32px;text-align:center;font-size:18px;margin-right:10px;vertical-align:2px}
+  .part{font-size:20px;background:#f7f6f2;border-radius:12px;padding:10px 16px;margin:26px 0 6px;color:#236d4d;font-weight:700}
+  .btn{display:inline-block;background:#236d4d;color:#fff!important;text-decoration:none;font-weight:700;font-size:19px;padding:12px 26px;border-radius:12px;margin:10px 0 4px}
+  .btn small{display:block;font-weight:400;font-size:13px;opacity:.85}
+  .tip{background:#fdf6e3;border-left:5px solid #e0a82e;border-radius:8px;padding:10px 16px;margin:12px 0;font-size:16.5px}
+  .ok{background:#edf3eb;border-left:5px solid #236d4d;border-radius:8px;padding:10px 16px;margin:12px 0;font-size:16.5px}
+  code{background:#eef1ec;border-radius:6px;padding:2px 8px;font-size:16px}
+  ol.steps{padding-left:24px}
+  ol.steps li{margin:10px 0}
+  .kbd{border:1px solid #c9d2c9;border-bottom-width:3px;border-radius:6px;padding:1px 8px;background:#fff;font-size:15.5px}
+  .foot{color:#7a8a7e;font-size:14.5px;text-align:center;margin-top:26px}
+  a{color:#236d4d}
+  .small{font-size:15px;color:#5c6f62}
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>朗读合辑 · 使用说明</h1>
+  <p class="sub">把本期朗读音频放进一个文件夹，双击一下，自动拼成一支视频。<br>不用懂电脑技术，照着点就行。</p>
+</header>
+
+<div class="part">一、准备工作（只在第一次用时做一次）</div>
+
+<section>
+  <h2><span class="num">1</span>安装 Python（一个免费的基础软件）</h2>
+  <p><b>Windows 电脑：</b></p>
+  <a class="btn" href="https://www.python.org/ftp/python/3.13.15/python-3.13.15-amd64.exe">点击下载 Python（Windows 版）<small>python-3.13.15-amd64.exe · 约 27 MB · 来自 python.org 官网</small></a>
+  <ol class="steps">
+    <li>下载好后，双击打开这个文件。</li>
+    <li><b>最重要的一步：</b>安装窗口<b>最下面</b>有一个小方框 <span class="kbd">☑ Add python.exe to PATH</span>，<b>先勾上它</b>。</li>
+    <li>再点 <span class="kbd">Install Now</span>，等它装完，点 <span class="kbd">Close</span>。</li>
+  </ol>
+  <p class="small">注：绝大多数电脑用上面这个链接。只有 Surface Pro X 等少数 ARM 芯片设备，才改用 <a href="https://www.python.org/ftp/python/3.13.15/python-3.13.15-arm64.exe">这个 ARM 版链接</a>。</p>
+  <p><b>苹果电脑（Mac）：</b></p>
+  <a class="btn" href="https://www.python.org/ftp/python/3.13.15/python-3.13.15-macos11.pkg">点击下载 Python（Mac 版）<small>python-3.13.15-macos11.pkg · 约 45 MB · 来自 python.org 官网</small></a>
+  <ol class="steps">
+    <li>下载好后，双击打开，一路点 <span class="kbd">继续</span> → <span class="kbd">同意</span> → <span class="kbd">安装</span>。</li>
+    <li>中途会要求输入一次<b>开机密码</b>，输入时屏幕不显示字符，这是正常的，输完按回车。</li>
+    <li>看到“安装成功”后点关闭。</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">2</span>解压工具包</h2>
+  <p>把收到的压缩包解压，得到一个文件夹（里面就是本说明所在的这套文件）。</p>
+  <div class="tip">⚠️ 请把<b>整个文件夹</b>放在桌面或“文档”里使用，不要只拖出其中几个文件——它们要待在一起才能工作。</div>
+</section>
+
+<section>
+  <h2><span class="num">3</span>首次安装（需要联网，约 5–15 分钟）</h2>
+  <p><b>Windows：</b>双击 <code>首次安装-Windows.bat</code></p>
+  <div class="tip">如果弹出蓝色窗口“Windows 已保护你的电脑”：点 <span class="kbd">更多信息</span>，再点 <span class="kbd">仍要运行</span>。这是 Windows 对陌生文件的常规提醒，不是病毒。</div>
+  <p><b>Mac：</b>双击 <code>首次安装-Mac.command</code></p>
+  <div class="tip">如果提示“无法打开，因为无法验证开发者”：在这个文件上<b>点右键</b> → 选 <span class="kbd">打开</span> → 在弹窗里再点一次 <span class="kbd">打开</span>。只需这样操作一次，以后双击即可。</div>
+  <div class="ok">✅ 窗口里最后显示“<b>安装完成</b>”才算装好，按回车关闭窗口。以后使用不用再装。</div>
+</section>
+
+<div class="part">二、每期制作（每次这样用）</div>
+
+<section>
+  <h2><span class="num">4</span>把本期音频放进“待处理音频”文件夹</h2>
+  <ol class="steps">
+    <li>微信群里的投稿，请先在电脑微信里<b>下载保存</b>到电脑上。</li>
+    <li>把本期要收录的音频文件放进 <code>待处理音频</code> 文件夹；支持 <code>.m4a</code> <code>.mp3</code> <code>.wav</code> <code>.aac</code> <code>.mp4</code>。</li>
+    <li>上一期留在里面的文件，请先移走。</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">5</span>双击制作</h2>
+  <p><b>Windows：</b>双击 <code>制作视频-Windows.bat</code>　　<b>Mac：</b>双击 <code>制作视频-Mac.command</code></p>
+  <p>窗口显示“正在识别人声并制作视频”，耐心等它跑完（音频多的话要几分钟）。看到“<b>制作完成</b>”后，<code>成片</code> 文件夹会自动打开。</p>
+</section>
+
+<section>
+  <h2><span class="num">6</span>检查后再分享</h2>
+  <ol class="steps">
+    <li>先打开 <code>成片</code> 里的“<b>核对清单</b>”网页，看本期收了哪些文件、有没有被跳过的。</li>
+    <li>再试看视频，重点听每段的<b>开头、结尾和两个人交接的地方</b>。</li>
+    <li>确认每位投稿人都收录了、内容没问题，再自行决定怎么分享。</li>
+  </ol>
+  <div class="tip">工具只负责找出“有人声”的片段，不会判断读得好不好、句子完不完整。最终收录什么，由您决定。</div>
+</section>
+
+<section>
+  <h2>卡住了怎么办</h2>
+  <p>把<b>整个窗口拍下来</b>（手机拍照即可），发给帮您安装的人，并说一下您做到第几步了。</p>
+  <p class="small">如果某次制作失败，请不要把上一次做好的旧视频当成这次的结果——旧视频还留在“成片”文件夹里，注意看文件日期。</p>
+</section>
+
+<p class="foot">所有音频只在您的电脑上处理，不会上传到任何地方。<br>工具不评判朗读的好坏，任何年龄、口音和语言的声音都一样欢迎。</p>
+
+</main>
+</body>
+</html>
