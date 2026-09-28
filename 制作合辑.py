@@ -165,6 +165,7 @@ def build(input_dir: Path, output_dir: Path) -> tuple[Path, Path, int, int]:
         input=json.dumps([str(path) for path in unique], ensure_ascii=False),
         capture_output=True,
         text=True,
+        encoding="utf-8",
     )
     if detected.returncode:
         raise RuntimeError("本地人声检测无法启动；请先运行‘首次安装’。" + detected.stderr.strip()[-300:])

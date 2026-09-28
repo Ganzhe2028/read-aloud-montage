@@ -1,17 +1,24 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-if not exist ".venv\Scripts\python.exe" (
-  echo 请先双击“首次安装-Windows.bat”。
-  pause
-  exit /b 1
-)
-echo 正在识别人声并制作视频，请稍等……
-.venv\Scripts\python.exe 制作合辑.py
-if errorlevel 1 (
-  echo 制作没有完成，请拍下上面的报错；不要分享旧视频。
-  pause
-  exit /b 1
-)
-start "" "%CD%\成片"
+set "PY=.venv\Scripts\python.exe"
+if exist "%PY%" goto run
+set "PY=python"
+where python >nul 2>nul
+if not errorlevel 1 goto run
+echo Python was not found on this computer.
+echo Please open the guide html file in this folder and finish the setup first.
 pause
+exit /b 1
+
+:run
+"%PY%" windows_entry.py
+if errorlevel 1 goto failed
+pause
+exit /b 0
+
+:failed
+echo The build did not finish. Please take a photo of the Chinese messages above
+echo and send it for help. Do not share an older video as this round's result.
+pause
+exit /b 1
