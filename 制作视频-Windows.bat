@@ -4,9 +4,9 @@ cd /d "%~dp0"
 set "PY=.venv\Scripts\python.exe"
 if exist "%PY%" goto run
 set "PY=python"
-where python >nul 2>nul
+python -c "import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)" >nul 2>nul
 if not errorlevel 1 goto run
-echo Python was not found on this computer.
+echo A working Python 3.11 or newer was not found on this computer.
 echo Please open the guide html file in this folder and finish the setup first.
 pause
 exit /b 1

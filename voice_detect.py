@@ -5,13 +5,15 @@ from __future__ import annotations
 import json
 import sys
 
+# Configure every pipe before importing components that may fail at startup.
+for stream in (sys.stdin, sys.stdout, sys.stderr):
+    stream.reconfigure(encoding="utf-8")
+
 from faster_whisper.audio import decode_audio
 from faster_whisper.vad import VadOptions, get_speech_timestamps
 
 
 def main() -> int:
-    sys.stdin.reconfigure(encoding="utf-8")
-    sys.stdout.reconfigure(encoding="utf-8")
     paths = json.load(sys.stdin)
     options = VadOptions(
         threshold=0.5,

@@ -166,6 +166,8 @@ def build(input_dir: Path, output_dir: Path) -> tuple[Path, Path, int, int]:
         capture_output=True,
         text=True,
         encoding="utf-8",
+        errors="replace",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
     )
     if detected.returncode:
         raise RuntimeError("本地人声检测无法启动；请先运行‘首次安装’。" + detected.stderr.strip()[-300:])
