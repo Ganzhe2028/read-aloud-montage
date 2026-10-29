@@ -12,11 +12,12 @@ import subprocess
 import sys
 import tempfile
 from datetime import datetime
+from dataclasses import replace
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-from selection import Excerpt, choose_excerpt
+from selection import Excerpt, allocate_excerpt_lengths, choose_excerpt
 
 
 ROOT = Path(__file__).resolve().parent
@@ -24,6 +25,9 @@ DEFAULT_INPUT = ROOT / "待处理音频"
 DEFAULT_OUTPUT = ROOT / "成片"
 BACKGROUND = ROOT / "素材" / "海边日落.png"
 SUPPORTED = {".m4a", ".mp3", ".wav", ".aac", ".mp4"}
+MAX_VIDEO_SECONDS = 240
+# Leave room for video frames and audio encoder padding.
+AUDIO_BUDGET_SECONDS = MAX_VIDEO_SECONDS - 1
 
 
 def ffmpeg_path() -> str:
@@ -104,7 +108,7 @@ def render_video(executable: str, background: Path, excerpts: list[Path], destin
     run_ffmpeg(executable, [
         "-y", "-loop", "1", "-framerate", "30", "-i", str(background),
         "-f", "concat", "-safe", "0", "-i", str(concat_file),
-        "-map", "0:v:0", "-map", "1:a:0", "-shortest",
+        "-map", "0:v:0", "-map", "1:a:0", "-shortest", "-t", str(MAX_VIDEO_SECONDS),
         "-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
         "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
         "-movflags", "+faststart", str(destination),
@@ -178,20 +182,38 @@ def build(input_dir: Path, output_dir: Path) -> tuple[Path, Path, int, int]:
     video = output_dir / f"朗读合辑-{day}-待审核.mp4"
     report = output_dir / f"朗读合辑-{day}-核对清单.html"
     included = []
+    candidates = []
+    for item in results:
+        source = Path(item["path"])
+        if "error" in item:
+            skipped.append(f"{source.name}：无法读取音频（{item['error']}）")
+            continue
+        excerpt = choose_excerpt(item["speech"], float(item["duration"]))
+        if excerpt is None:
+            skipped.append(f"{source.name}：没有检测到足够的人声，请人工检查")
+            continue
+        candidates.append((item, excerpt))
+    lengths = allocate_excerpt_lengths(
+        [excerpt.end - excerpt.start for _, excerpt in candidates], AUDIO_BUDGET_SECONDS,
+    )
     with tempfile.TemporaryDirectory(prefix="reading-", dir=ROOT / ".work") as temp_name:
         temp = Path(temp_name)
         background = temp / "background.png"
         font_found = make_background(background, day)
         excerpt_paths = []
-        for item in results:
+        for (item, excerpt), length in zip(candidates, lengths):
             source = Path(item["path"])
-            if "error" in item:
-                skipped.append(f"{source.name}：无法读取音频（{item['error']}）")
-                continue
-            excerpt = choose_excerpt(item["speech"], float(item["duration"]))
-            if excerpt is None:
-                skipped.append(f"{source.name}：没有检测到足够的人声，请人工检查")
-                continue
+            if length < excerpt.end - excerpt.start:
+                excerpt = choose_excerpt(
+                    item["speech"], float(item["duration"]),
+                    target_seconds=min(17.0, length), max_seconds=length,
+                ) if length > 0 else None
+                if excerpt is None:
+                    skipped.append(f"{source.name}：4 分钟内未能选出可用人声，请人工检查")
+                    continue
+                excerpt = replace(excerpt, warning="；".join(filter(None, [
+                    excerpt.warning, "为控制总时长，已缩短选段，请试听首尾",
+                ])))
             excerpt_path = temp / f"clip-{len(excerpt_paths):04d}.wav"
             try:
                 extract_audio(executable, source, excerpt, excerpt_path)

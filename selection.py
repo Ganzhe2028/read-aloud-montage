@@ -3,6 +3,23 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import floor
+
+
+def allocate_excerpt_lengths(lengths: list[float], budget: float) -> list[float]:
+    """Share the budget equally, keeping short excerpts at their original length."""
+    if sum(lengths) <= budget:
+        return lengths.copy()
+    remaining = budget
+    cap = 0.0
+    for index, length in enumerate(sorted(lengths)):
+        cap = remaining / (len(lengths) - index)
+        if length >= cap:
+            break
+        remaining -= length
+    # Audio extraction accepts milliseconds; round down to stay within budget.
+    cap = floor(cap * 1000) / 1000
+    return [min(length, cap) for length in lengths]
 
 
 @dataclass(frozen=True)
